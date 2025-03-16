@@ -1,0 +1,374 @@
+{
+    "sections": {
+        "main": {
+            "type": "pp-main-product-v1-0-0",
+            "blocks": {
+                "review_numbers_3d09cr": {
+                    "type": "pp_review_numbers",
+                    "settings": {
+                        "rating": 5,
+                        "stars_color": "#facc15",
+                        "review_count": 109,
+                        "review_text": "reviews"
+                    }
+                },
+                "title_3fsezs": {
+                    "type": "title",
+                    "settings": {}
+                },
+                "benefit_hw02kk": {
+                    "type": "text",
+                    "settings": {
+                        "text": "✔️ Elevate outfits effortlessly",
+                        "text_style": "body"
+                    }
+                },
+                "benefit_tzl7fu": {
+                    "type": "text",
+                    "settings": {
+                        "text": "✔️ Brighten your style instantly",
+                        "text_style": "body"
+                    }
+                },
+                "benefit_aswetg": {
+                    "type": "text",
+                    "settings": {
+                        "text": "✔️ Enjoy durability every day",
+                        "text_style": "body"
+                    }
+                },
+                "benefit_qcjzvr": {
+                    "type": "text",
+                    "settings": {
+                        "text": "✔️ Impress on special occasions",
+                        "text_style": "body"
+                    }
+                },
+                "divider_ecwkac": {
+                    "type": "divider",
+                    "settings": {}
+                },
+                "custom_liquid_4fWeNX": {
+                    "type": "pp_custom_liquid_block",
+                    "settings": {
+                        "content": "test"
+                    }
+                },
+                "price_eelu0a": {
+                    "type": "price",
+                    "settings": {
+                        "price_color": "#000000",
+                        "compare_price_color": "#A3A3A3"
+                    }
+                },
+                "quantity_moxjuw": {
+                    "type": "quantity",
+                    "settings": {
+                        "quantity_text": "Quantity"
+                    }
+                },
+                "variant_picker_tx3jn2": {
+                    "type": "variant_picker",
+                    "settings": {}
+                },
+                "buy_buttons_vrge4x": {
+                    "type": "buy_buttons",
+                    "settings": {
+                        "add_to_cart_text": "Add To Cart",
+                        "sold_out_text": "Sold Out",
+                        "unavailable_text": "Unavailable"
+                    }
+                },
+                "review_block_h2mdvb": {
+                    "type": "pp_review_block",
+                    "settings": {
+                        "rating": 5,
+                        "stars_color": "#facc15",
+                        "image": "shopify://shop_images/10a25440-fd4b-4b16-9ed3-5056a1eefd01.webp",
+                        "review": "Wearing this necklace transforms my whole day! Its beautiful blue stones make every outfit pop, and the compliments never stop. It's my go-to piece for feeling elegant yet effortless.",
+                        "name": "Sarah Z."
+                    }
+                },
+                "divider_4tnuld": {
+                    "type": "divider",
+                    "settings": {}
+                },
+                "expandable_7osycv": {
+                    "type": "pp_expandable_text",
+                    "settings": {
+                        "title": "Shipping Information",
+                        "content": "<p>We offer tracked and insured shipping for all of our orders. Order processing takes 1-3 business days before shipment.</p>",
+                        "icon": "globe"
+                    }
+                },
+                "expandable_012u3j": {
+                    "type": "pp_expandable_text",
+                    "settings": {
+                        "title": "Return Policy",
+                        "content": "<p>We love our products and are confident you will too! That's why we are offering a 30-Day, Risk-Free Trial. If you are not in love with your results, we will give you a refund.</p>",
+                        "icon": "back"
+                    }
+                },
+                "expandable_012u32": {
+                    "type": "pp_expandable_text",
+                    "settings": {
+                        "title": "30-day Money Back Guarantee",
+                        "content": "<p>We love our products and are confident you will too! That's why we are offering a 30-Day, Risk-Free Trial. If you are not in love with your results, we will give you a refund.</p>",
+                        "icon": "back"
+                    }
+                },
+                "cart_drawer_akap6t": {
+                    "type": "cart_drawer",
+                    "settings": {
+                        "cart_drawer_title": "Your cart",
+                        "cart_drawer_total_text": "Total",
+                        "cart_drawer_empty_text": "Your cart is empty",
+                        "checkout_button_text": "Checkout"
+                    }
+                }
+            },
+            "block_order": [
+                "review_numbers_3d09cr",
+                "title_3fsezs",
+                "benefit_hw02kk",
+                "benefit_tzl7fu",
+                "benefit_aswetg",
+                "benefit_qcjzvr",
+                "divider_ecwkac",
+                "custom_liquid_4fWeNX",
+                "price_eelu0a",
+                "quantity_moxjuw",
+                "variant_picker_tx3jn2",
+                "buy_buttons_vrge4x",
+                "review_block_h2mdvb",
+                "divider_4tnuld",
+                "expandable_7osycv",
+                "expandable_012u3j",
+                "expandable_012u32",
+                "cart_drawer_akap6t"
+            ],
+            "settings": {
+                "heading_font_size": 24,
+                "body_font_size": 16,
+                "pp_heading_color": "#000000",
+                "pp_body_color": "#000000",
+                "pp_brand_color": "#8d8d8d",
+                "pp_button_background_color": "#000000",
+                "pp_button_text_color": "#FFFFFF",
+                "pp_border_radius": 16
+            }
+        },
+        "image_with-text_gyqvd0": {
+            "type": "pp-image-with-text-v1-0-0",
+            "blocks": {
+                "heading_6t989o": {
+                    "type": "heading",
+                    "settings": {
+                        "heading": "Transform Your Style with Effortless Elegance and Vibrant Charm"
+                    }
+                },
+                "text_usmgtk": {
+                    "type": "text",
+                    "settings": {
+                        "text": "Elevate your everyday look with this stunning necklace. Its vibrant blue stones and elegant design add a touch of sophistication to any outfit, making you feel confident and stylish no matter the occasion."
+                    }
+                },
+                "button_j7s52n": {
+                    "type": "button",
+                    "settings": {
+                        "button_behaviour": "scroll_to_top",
+                        "button_label": "Get Mine Now",
+                        "button_link": ""
+                    }
+                }
+            },
+            "block_order": [
+                "heading_6t989o",
+                "text_usmgtk",
+                "button_j7s52n"
+            ],
+            "settings": {
+                "image": "shopify://shop_images/image_902_1741644619020-81676644-53674751-90191762_0.jpg?v=1741651295",
+                "image_alt": "Ocean's Jewel Necklace",
+                "layout": "image_first"
+            }
+        },
+        "image_with-benefits_4m5rdb": {
+            "type": "pp-image-with-benefits-v1-0-0",
+            "blocks": {
+                "benefit_nuh0us": {
+                    "type": "benefit",
+                    "settings": {
+                        "icon": "💎",
+                        "title": "Vibrant Charm",
+                        "description": "Add sparkle to any outfit with beautiful blue stones."
+                    }
+                },
+                "benefit_ymaamp": {
+                    "type": "benefit",
+                    "settings": {
+                        "icon": "✨",
+                        "title": "Instant Elegance",
+                        "description": "Transform your look effortlessly for any occasion."
+                    }
+                },
+                "benefit_cyuytp": {
+                    "type": "benefit",
+                    "settings": {
+                        "icon": "🛡️",
+                        "title": "Reliable Quality",
+                        "description": "Crafted to last, ensuring durability and daily wear."
+                    }
+                },
+                "benefit_dj3ws0": {
+                    "type": "benefit",
+                    "settings": {
+                        "icon": "🎉",
+                        "title": "Special Moments",
+                        "description": "Perfect for making a statement at celebrations."
+                    }
+                }
+            },
+            "block_order": [
+                "benefit_nuh0us",
+                "benefit_ymaamp",
+                "benefit_cyuytp",
+                "benefit_dj3ws0"
+            ],
+            "settings": {
+                "heading": "Discover Effortless Elegance with Every Wear",
+                "subtitle": "This necklace transforms your look effortlessly, adding vibrant elegance and confidence to your daily style.",
+                "image": "shopify://shop_images/image_765_1741644619019-33254897-99115778-3769903_1.jpg?v=1741651295"
+            }
+        },
+        "faqs_v2s84t": {
+            "type": "pp-faqs-v1-0-0",
+            "blocks": {
+                "faq_dzsz77": {
+                    "type": "faq_item",
+                    "settings": {
+                        "question": "Is the necklace suitable for daily wear?",
+                        "answer": "Yes, it's crafted with durability in mind, making it perfect for everyday elegance and special occasions alike."
+                    }
+                },
+                "faq_a77wyw": {
+                    "type": "faq_item",
+                    "settings": {
+                        "question": "What materials are used in the necklace?",
+                        "answer": "The necklace features fine gold plating and vivid blue gemstones, ensuring elegance and durability."
+                    }
+                },
+                "faq_5e1h8u": {
+                    "type": "faq_item",
+                    "settings": {
+                        "question": "How should I care for the necklace?",
+                        "answer": "Simply wipe with a soft cloth to maintain its shine. Store separately to avoid scratches."
+                    }
+                },
+                "faq_kw87jr": {
+                    "type": "faq_item",
+                    "settings": {
+                        "question": "Does it come with a warranty?",
+                        "answer": "Yes, we offer a 30-day money-back guarantee to ensure your satisfaction."
+                    }
+                },
+                "faq_jrmtv4": {
+                    "type": "faq_item",
+                    "settings": {
+                        "question": "Can it be worn with any outfit?",
+                        "answer": "Absolutely! Its versatile design complements both casual and formal attire, adding a touch of elegance."
+                    }
+                }
+            },
+            "block_order": [
+                "faq_dzsz77",
+                "faq_a77wyw",
+                "faq_5e1h8u",
+                "faq_kw87jr",
+                "faq_jrmtv4"
+            ],
+            "settings": {
+                "heading": "Your Questions About Ocean's Jewel Necklace, Answered",
+                "description": "Clarity and confidence in every purchase.",
+                "button_behaviour": "scroll_to_top",
+                "button_label": "Get Mine Now",
+                "button_link": ""
+            }
+        },
+        "review_grid_iph8ys": {
+            "type": "pp-review-grid-v1-0-0",
+            "blocks": {
+                "review_adl94y": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Olivia",
+                        "verified_text": "Verified Buyer",
+                        "rating": 4,
+                        "review_text": "Game changer! 🔥"
+                    }
+                },
+                "review_kx3v0j": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Charlotte",
+                        "verified_text": "Verified Buyer",
+                        "rating": 4,
+                        "review_text": "Amazing quality, worth every penny!"
+                    }
+                },
+                "review_bwyurs": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Ava",
+                        "verified_text": "Verified Buyer",
+                        "rating": 5,
+                        "review_text": "Beautiful design."
+                    }
+                },
+                "review_bhpm2e": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Sophia",
+                        "verified_text": "Verified Buyer",
+                        "rating": 4,
+                        "review_text": "Simply stunning!"
+                    }
+                },
+                "review_4oj3f9": {
+                    "type": "review",
+                    "settings": {
+                        "name": "Evelyn",
+                        "verified_text": "Verified Buyer",
+                        "rating": 4,
+                        "review_text": "Feels luxurious yet affordable."
+                    }
+                }
+            },
+            "block_order": [
+                "review_adl94y",
+                "review_kx3v0j",
+                "review_bwyurs",
+                "review_bhpm2e",
+                "review_4oj3f9"
+            ],
+            "settings": {
+                "heading": "Customers Share Their Thoughts",
+                "subheading": "Authentic Opinions You Can Trust"
+            }
+        },
+        "recommended_products_5qrv5r": {
+            "type": "pp-recommended-products-v1-0-0",
+            "settings": {
+                "heading": "Recommended Products"
+            }
+        }
+    },
+    "order": [
+        "main",
+        "image_with-text_gyqvd0",
+        "image_with-benefits_4m5rdb",
+        "faqs_v2s84t",
+        "review_grid_iph8ys",
+        "recommended_products_5qrv5r"
+    ]
+}

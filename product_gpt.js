@@ -16,60 +16,7 @@ const csvWriter = createCsvWriter({
 
 async function refineProductDescription(description) {
   const content =
-  description + `
-    
-    
-    
-    Please write a full 300 words product description based on the summary above using easy to understand langagues and short sentence. Expand the content if possible.
-
-    You must insert one of the following keywords in the description. The keywords should be exactly as one of the following.
-    gold plated jewelry
-    gold plated necklace
-    gold plated anklet
-    gold plated bracelet
-    gold plated earrings
-    gold plated stud
-
-    optionally insert the following keywords to the description where possible
-    earrings hoop earrings
-    gold plated necklaces
-    perfect gold plated
-    gold plated
-    plated jewelry
-    jewelry gold
-    gold plating
-    gold jewelry
-    hoop earrings
-    stud earrings
-    gold necklaces
-    gold bracelets
-    chain necklace
-    gold rings
-    gold earrings
-    pendant necklaces
-    gold
-    jewelry
-    earrings
-    plated
-    rings
-    necklaces
-    bracelets
-    necklace
-    silver
-    price
-    shop
-    pearl
-    right
-    sale
-    view
-    gift
-    jewellery
-    size
-    gifts
-    guide
-    
-    
-    `;
+  ``;
   return await axios
     .post(
       "https://api.openai.com/v1/chat/completions",

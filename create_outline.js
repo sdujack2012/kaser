@@ -5,8 +5,7 @@ const  OpenAI = require("openai");
 const openai = new OpenAI();
 
 async function convertFromHtmlToJson() {
-  const apiKey = await fs.readFile("./apikey", "utf8");
-  process.env.OPENAI_API_KEY = apiKey;
+
   const html = await fs.readFile("./outilne.html", "utf8");
   const root = parse(html);
   const outline = {};
