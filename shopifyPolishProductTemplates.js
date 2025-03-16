@@ -3,11 +3,15 @@ import fs from "fs";
 import {
   insertProductTemplate,
   updateProductTemplate,
+  updateProductTitle,
   retrieveProducts,
   convertToShopifyUrl,
   retrieveProductTemplateFile,
+  uploadImage,
+  getImageById,
 } from "./shopifyFunctions.js";
 import { generateVerifiedContent } from "./generateText.js";
+import { shopifyApi } from "@shopify/shopify-api";
 
 const fakeUsers = JSON.parse(fs.readFileSync("./fakeusers.json"));
 
@@ -45,19 +49,21 @@ async function fillProductTemplateWithCopies(product, productTemplate) {
     content: `
       I need you to write the following copies for the product info provided - title: "${product.title}" and description: "${product.description}" 
       make sure all the following copies are relvant to the information provided and use AIDA copywriting framework
+      Product title: Refine the existing product title , make it less than 10 words. Copy the style from the example: Celestial Radiance Hoops
       Product heading 1: Write a high conversion product heading , make it less than 5 words. Copy the style from the example: Ocean's Jewel Necklace
       Product heading 2: Write a high conversion product heading , make it less than 10 words. Copy the style from the example: Elevate your style with this stunning Ocean's Jewel Necklace
       Product description 1: Write a high conversion product description  , make it around 30 words
       Product description 2: Write a high conversion product description  , make it around 20 words
       Product description 3: Write a high conversion product description  , make it around 50 words
 
-      output the copies in a json with the following shape { product_heading_1: string, product_heading_2: string,  product_description_1: string, product_description_2: string, product_description_2: string}
+      output the copies in a json with the following shape { product_title: string, product_heading_1: string, product_heading_2: string,  product_description_1: string, product_description_2: string, product_description_2: string}
       `,
   };
   const productHeadingDescription = await generateVerifiedContent(
     systemMessage,
     prompt,
     (copies) =>
+      copies.product_title &&
       copies.product_heading_1 &&
       copies.product_heading_2 &&
       copies.product_description_1 &&
@@ -111,40 +117,46 @@ async function fillProductTemplateWithCopies(product, productTemplate) {
       output the copies in a json with the following shape [{benefit_summary, benefit_description, benefit_emoji}] 
       `,
   };
-  const productBenefits = await generateVerifiedContent(
-    systemMessage,
-    prompt,
-    (copies) =>
-      copies.length === 4 &&
-      copies.every(
-        (copy) =>
-          copy.benefit_summary &&
-          copy.benefit_description &&
-          copy.benefit_emoji &&
-          copy.benefit_emoji.length < 4
-      )
-  );
+  // const productBenefits = await generateVerifiedContent(
+  //   systemMessage,
+  //   prompt,
+  //   (copies) =>
+  //     copies.length === 4 &&
+  //     copies.every(
+  //       (copy) =>
+  //         copy.benefit_summary &&
+  //         copy.benefit_description &&
+  //         copy.benefit_emoji &&
+  //         copy.benefit_emoji.length < 4
+  //     )
+  // );
 
-  // const productBenefits = [{
-  //   benefit_summary: "Durability & Shine",
-  //   benefit_description: "Made with high-quality gold plating, this piece resists tarnishing and maintains its luxurious shine for years.",
-  //   benefit_emoji: "🛡",
-  // },
-  // {
-  //   benefit_summary: "Luxury Look, Affordable Price",
-  //   benefit_description: "Get the premium feel of high-end jewelry without the hefty price tag.",
-  //   benefit_emoji: "💎",
-  // },
-  // {
-  //   benefit_summary: "Perfect for Any Occasion",
-  //   benefit_description: "Whether casual or formal, it’s the ultimate style upgrade.",
-  //   benefit_emoji: "✨",
-  // },
-  // {
-  //   benefit_summary: "Confidence in Quality",
-  //   benefit_description: "Backed by a satisfaction guarantee or replacement policy for peace of mind.",
-  //   benefit_emoji: "💯",
-  // }];
+  const productBenefits = [
+    {
+      benefit_summary: "Durability & Shine",
+      benefit_description:
+        "Made with high-quality gold plating, this piece resists tarnishing and maintains its luxurious shine for years.",
+      benefit_emoji: "🛡",
+    },
+    {
+      benefit_summary: "Luxury Look, Affordable Price",
+      benefit_description:
+        "Get the premium feel of high-end jewelry without the hefty price tag.",
+      benefit_emoji: "💎",
+    },
+    {
+      benefit_summary: "Perfect for Any Occasion",
+      benefit_description:
+        "Whether casual or formal, it’s the ultimate style upgrade.",
+      benefit_emoji: "✨",
+    },
+    {
+      benefit_summary: "Confidence in Quality",
+      benefit_description:
+        "Backed by a satisfaction guarantee or replacement policy for peace of mind.",
+      benefit_emoji: "💯",
+    },
+  ];
 
   console.log(productBenefits);
 
@@ -259,13 +271,32 @@ async function fillProductTemplateWithCopies(product, productTemplate) {
       output the copies in a json with the following shape [string]
       `,
   };
-  const productReviews = await generateVerifiedContent(
-    systemMessage,
-    prompt,
-    (copies) =>
-      copies.length > 5 &&
-      copies.every((copy) => typeof copy === "string" || copy instanceof String)
+  const originalProductReviews = JSON.parse(
+    fs.readFileSync("./aliexpress.json")
   );
+  const goodReviews = originalProductReviews[product.id]?.reviews
+    ?.filter((review) => review.stars >= 4 && review.images?.length)
+    .slice(0, 10);
+
+  console.log(goodReviews);
+
+  const productReviews = goodReviews?.length
+    ? goodReviews
+    : (
+        await generateVerifiedContent(
+          systemMessage,
+          prompt,
+          (copies) =>
+            copies.length > 5 &&
+            copies.every(
+              (copy) => typeof copy === "string" || copy instanceof String
+            )
+        )
+      ).map((review) => ({
+        review,
+        stars: 5,
+        images: [],
+      }));
   console.log(productReviews);
 
   const fakeUser = fakeUsers[Math.floor(Math.random() * 5000)];
@@ -273,7 +304,7 @@ async function fillProductTemplateWithCopies(product, productTemplate) {
   objectPath.set(
     productTemplate,
     "sections.main.blocks.review_block_h2mdvb.settings.review",
-    `${productReviews[0]}`
+    `${productReviews[0].review}`
   );
   objectPath.set(
     productTemplate,
@@ -286,32 +317,65 @@ async function fillProductTemplateWithCopies(product, productTemplate) {
     `<p>${fakeUser.name.first} ${fakeUser.name.last.substring(0, 1)}<p>`
   );
 
+  const reviewImages = [];
+  productReviews.forEach((review) => {
+    reviewImages.push(review.images[0]);
+  });
+
+  const reviewImagesUpload = await Promise.all(
+    reviewImages.map((reviewImage) =>
+      uploadImage(reviewImage, ``).then((data) => ({
+        id: data.fileCreate.files[0].id,
+        originalUrl: reviewImage,
+      }))
+    )
+  );
+
+  let allUploaded = false;
+  let reviewImageUrls = null;
+  while (!allUploaded) {
+    reviewImageUrls = await Promise.all(
+      reviewImagesUpload.map(({ id, originalUrl }) =>
+        getImageById(id).then((data) => ({
+          shopifyImageUrl: data.node.image?.url,
+          id,
+          originalUrl,
+        }))
+      )
+    );
+    console.log(JSON.stringify(reviewImageUrls, null, 4));
+    allUploaded = reviewImageUrls.every(
+      (reviewImageUrl) => reviewImageUrl.shopifyImageUrl
+    );
+  }
+
   const reviews = [
-    "sections.review_grid_iph8ys.blocks.review_adl94y.settings",
-    "sections.review_grid_iph8ys.blocks.review_kx3v0j.settings",
-    "sections.review_grid_iph8ys.blocks.review_bwyurs.settings",
-    "sections.review_grid_iph8ys.blocks.review_bhpm2e.settings",
-    "sections.review_grid_iph8ys.blocks.review_4oj3f9.settings",
+    "sections.review_grid_iph8ys.blocks.review_adl94y",
+    "sections.review_grid_iph8ys.blocks.review_kx3v0j",
+    "sections.review_grid_iph8ys.blocks.review_bwyurs",
+    "sections.review_grid_iph8ys.blocks.review_bhpm2e",
+    "sections.review_grid_iph8ys.blocks.review_4oj3f9",
   ];
 
   for (let i = 0; i < reviews.length; i++) {
     const review = reviews[i];
+    const fakeUser = fakeUsers[Math.floor(Math.random() * 5000)];
+
     objectPath.set(productTemplate, review, {
       type: "review",
       settings: {
-        name: "Evelyn",
+        name: fakeUser.name.first + " " + fakeUser.name.last.substring(0, 1),
         verified_text: "Verified Buyer",
-        rating: 5,
-        review_text: "Feels luxurious yet affordable.",
+        rating: productReviews[i].stars,
+        image: convertToShopifyUrl(
+          reviewImageUrls.find(
+            (reviewImageUrl) =>
+              reviewImageUrl.originalUrl === productReviews[i].images[0]
+          ).shopifyImageUrl
+        ),
+        review_text: productReviews[i].review,
       },
     });
-    objectPath.set(productTemplate, review + ".review_text", productReviews[i]);
-    const fakeUser = fakeUsers[Math.floor(Math.random() * 5000)];
-    objectPath.set(
-      productTemplate,
-      review + ".name",
-      fakeUser.name.first + " " + fakeUser.name.last.substring(0, 1)
-    );
   }
 
   // prompt = {
@@ -515,12 +579,11 @@ async function fillProductTemplateWithCopies(product, productTemplate) {
   //   `<p>More Than jewellery piece offers a unique combination of timeless beauty, sustainability, and expertise that others lack. With over eight years of experience, we create everlasting floral arrangements that bring enduring elegance, while our eco-friendly approach ensures a positive impact on the planet. Each piece is designed to add a touch of sophistication to any space, making it perfect for both special occasions and everyday décor.</p>`
   // );
 
-  return productTemplate;
+  return { title: productHeadingDescription.product_title, productTemplate };
 }
 
 async function updateProduct(product, fakeUsers) {
   let productTemplate;
-  console.log(product);
   if (product.templateSuffix === product.id) {
     productTemplate = JSON.parse(
       await retrieveProductTemplateFile(148587086038, product.id)
@@ -529,20 +592,25 @@ async function updateProduct(product, fakeUsers) {
     productTemplate = JSON.parse(fs.readFileSync("./product_template.json"));
   }
 
-  productTemplate = await fillProductTemplateWithCopies(
+  const productTemplateAndTitle = await fillProductTemplateWithCopies(
     product,
     productTemplate
   );
 
-  const data = await insertProductTemplate(
+  productTemplate = productTemplateAndTitle.productTemplate;
+  const title = productTemplateAndTitle.title;
+
+  let data = await updateProductTitle(product.id, title);
+  console.log(JSON.stringify(data, null, 4));
+
+  data = await insertProductTemplate(
     148587086038,
     product.id,
     JSON.stringify(productTemplate).replace("👉🏻", "").replace("👉🏻", "")
   );
   console.log(JSON.stringify(data, null, 4));
-
   if (data.themeFilesUpsert.userErrors.length === 0) {
-    const data = await updateProductTemplate(product.id, product.id.toString());
+    const data = await updateProductTemplate(product.id);
     console.log(JSON.stringify(data, null, 4));
     return productTemplate;
   } else {

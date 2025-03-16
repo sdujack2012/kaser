@@ -18,13 +18,14 @@ const session = shopify.session.customAppSession(process.env.shopName);
 const client = new shopify.clients.Graphql({ session });
 
 export async function retrieveProductTemplateFile(templateId, productId) {
+  const productIdNumberPart = productId.match(/\d{1,}/gim)[0];
   const data = await throwableQuery({
     data: `query {
       theme(id: "gid://shopify/OnlineStoreTheme/${templateId}") {
         id
         name
         role
-        files(filenames: ["templates/product.${productId}.json"], first: 1) {
+        files(filenames: ["templates/product.${productIdNumberPart}.json"], first: 1) {
           nodes {
             body {
               ... on OnlineStoreThemeFileBodyText {
@@ -43,7 +44,8 @@ export async function retrieveProductTemplateFile(templateId, productId) {
   )[0];
 }
 
-export async function insertProductTemplate(templateId, filename, template) {
+export async function insertProductTemplate(templateId, productId, template) {
+  const productIdNumberPart = productId.match(/\d{1,}/gim)[0];
   const data = await throwableQuery({
     data: {
       query: `mutation themeFilesUpsert($files: [OnlineStoreThemeFilesUpsertFileInput!]!, $themeId: ID!) {
@@ -61,7 +63,7 @@ export async function insertProductTemplate(templateId, filename, template) {
         themeId: `gid://shopify/OnlineStoreTheme/${templateId}`,
         files: [
           {
-            filename: `templates/product.${filename}.json`,
+            filename: `templates/product.${productIdNumberPart}.json`,
             body: {
               type: "TEXT",
               value: template,
@@ -212,13 +214,13 @@ query {
 }`,
   });
   return data.products.edges.map((edge) => ({
-    id: edge.node.id.match(/\d{1,}/gim)[0],
+    id: edge.node.id,
     title: edge.node.title,
     description: edge.node.description,
     handle: edge.node.handle,
-    images: edge.node.media.edges.map((edge) =>
-      convertToShopifyUrl(edge.node.image.url)
-    ),
+    images: edge.node.media.edges
+      .filter((edge) => edge.node.image?.url)
+      .map((edge) => convertToShopifyUrl(edge.node.image.url)),
     templateSuffix: edge.node.templateSuffix,
   }));
 }
@@ -257,14 +259,15 @@ export async function retrieveProductById(productId) {
       }
     }
   `,
-      variables: { id: `gid://shopify/Product/${productId}` },
+      variables: { id: productId },
     },
   });
 
   return data;
 }
 
-export async function updateProductTemplate(productId, templateSuffix) {
+export async function updateProductTemplate(productId) {
+  const productIdNumberPart = productId.match(/\d{1,}/gim)[0];
   const data = await throwableQuery({
     data: {
       query: `mutation UpdateProductWithNewMedia($input: ProductInput!,  $media: [CreateMediaInput!]) {
@@ -281,8 +284,43 @@ export async function updateProductTemplate(productId, templateSuffix) {
       }`,
       variables: {
         input: {
-          id: `gid://shopify/Product/${productId}`,
-          templateSuffix: templateSuffix,
+          id: productId,
+          templateSuffix: productIdNumberPart,
+        },
+      },
+    },
+  });
+
+  return data;
+}
+
+export async function updateProductTitle(productId, title) {
+  const data = await throwableQuery({
+    data: {
+      query: `mutation UpdateProductWithNewMedia($input: ProductInput!) {
+      productUpdate(input: $input) {
+        product {
+          id
+          media(first: 10) {
+            nodes {
+              alt
+              mediaContentType
+              preview {
+                status
+              }
+            }
+          }
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }`,
+      variables: {
+        input: {
+          id: productId,
+          title,
         },
       },
     },

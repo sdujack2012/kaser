@@ -3,7 +3,7 @@ import puppeteer from "puppeteer";
 export async function scrapeAliexpressProductById(id) {
   // Launch the browser
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: [".disable notifications"],
   });
   const page = await browser.newPage();

@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 export async function generateTextOllama(messages, model) {
@@ -20,7 +19,11 @@ export async function generateTextOllama(messages, model) {
   return response.data.message;
 }
 
-export async function generateVerifiedContent(systemMessage, prompt, verifyFunc) {
+export async function generateVerifiedContent(
+  systemMessage,
+  prompt,
+  verifyFunc
+) {
   let done = false;
   let retry = 0;
   const retryLimit = 10;
@@ -29,21 +32,20 @@ export async function generateVerifiedContent(systemMessage, prompt, verifyFunc)
   while (!done && retry < retryLimit) {
     const message = await generateTextOllama(messages, "deepseek-r1:14b");
     try {
-      let copies = JSON.parse(message.content
-        .match(/^[\{\[][\s\S]*[\}\]]$/gmi)[0]);
+      let copies = JSON.parse(
+        message.content.match(/^[\{\[][\s\S]*[\}\]]$/gim)[0]
+      );
       if (verifyFunc(copies)) {
         done = true;
-        return {
-          ...copies,
-        };
+        return copies;
       } else {
-        console.log("retried", copies)
+        console.log("retried", copies);
         retry++;
       }
-    } catch(ex) {
-      console.log("invalid json", ex)
+    } catch (ex) {
+      console.log("invalid json", ex);
       if (retry > retryLimit) {
-        throw "retry limit reached"
+        throw "retry limit reached";
       }
     }
   }
