@@ -123,6 +123,27 @@ export async function getImageById(shopifyImageId) {
   return data;
 }
 
+export async function getImagesByIds(ids) {
+  const data = await throwableQuery({
+    data: {
+      query: `query GetImagesByIds($ids: [ID!]!) {
+        nodes(ids: $ids) {
+          ... on ProductImage {
+            id
+            originalSrc
+            altText
+          }
+        }
+      }`,
+      variables: {
+        ids,
+      },
+    },
+  });
+
+  return data;
+}
+
 export function convertToShopifyUrl(url) {
   return url
     .replace(/https[\S]{1,}files\//gm, "shopify://shop_images/")
